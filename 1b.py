@@ -1,4 +1,8 @@
+import datetime
+
+
 def part2(numbers):
+    numbers.sort()
     for i in numbers:
         for j in numbers:
             for k in numbers:
@@ -8,4 +12,8 @@ def part2(numbers):
 
 with open("1a.txt", "r") as file:
     numbers = [int(number.strip()) for number in file.readlines()]
-    print(part2(numbers))
+    begin_time = datetime.datetime.now()
+    answer = part2(numbers)
+    end_time = datetime.datetime.now() - begin_time
+    print(end_time)
+    print(answer)
