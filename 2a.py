@@ -9,7 +9,7 @@ with open("2.txt", "r") as file:
         charMax = int(countRange.split("-")[1])
         char = rule.split(" ")[1]
         charCount = password.count(char)
-        if charCount >= charMin and charCount <= charMax:
+        if charMin <= charCount <= charMax:
             validPasswordCount += 1
     print(validPasswordCount)
 
@@ -23,8 +23,6 @@ with open("2.txt", "r") as file:
         charMin = int(countRange.split("-")[0])
         charMax = int(countRange.split("-")[1])
         char = rule.split(" ")[1]
-        if (password[charMin - 1] == char and password[charMax - 1] != char) or (
-            password[charMin - 1] != char and password[charMax - 1] == char
-        ):
+        if (password[charMin - 1] == char) ^ (password[charMax - 1] == char):
             validPasswordCount += 1
     print(validPasswordCount)
