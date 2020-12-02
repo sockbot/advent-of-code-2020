@@ -1,7 +1,6 @@
 lines = """
-
 """
-
+lines = lines.strip()
 lines = [line for line in lines.split("\n")]
 
 
@@ -10,22 +9,23 @@ def timer(fn):
         import datetime
 
         begin_time = datetime.datetime.now()
-        fn(x)
+        result = fn(x)
         delta_time = datetime.datetime.now() - begin_time
         print(delta_time)
+        return result
 
     return function_wrapper
 
 
 @timer
 def part1(lines):
-    pass
+    return
 
 
 @timer
 def part2(lines):
-    pass
+    return
 
 
-print(part1(lines))
-print(part2(lines))
+print(f"Answer 1: {part1(lines)}")
+print(f"Answer 2: {part2(lines)}")
