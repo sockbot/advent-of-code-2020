@@ -1,3 +1,4 @@
+lines = """
 1211
 1698
 1787
@@ -198,3 +199,41 @@
 1156
 1948
 1894
+"""
+lines = lines.strip()
+lines = [int(line) for line in lines.split("\n")]
+
+
+def timer(fn):
+    def function_wrapper(x):
+        import datetime
+
+        begin_time = datetime.datetime.now()
+        result = fn(x)
+        delta_time = datetime.datetime.now() - begin_time
+        print(delta_time)
+        return result
+
+    return function_wrapper
+
+
+@timer
+def part1(numbers):
+    for i in numbers:
+        for j in numbers:
+            if i + j == 2020:
+                return i * j
+
+
+@timer
+def part2(numbers):
+    numbers.sort()
+    for i in numbers:
+        for j in numbers:
+            for k in numbers:
+                if i + j + k == 2020:
+                    return i * j * k
+
+
+print(f"Answer 1: {part1(lines)}")
+print(f"Answer 2: {part2(lines)}")
