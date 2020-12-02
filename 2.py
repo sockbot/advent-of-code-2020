@@ -1,3 +1,4 @@
+lines = """
 3-4 l: vdcv
 6-9 d: dddddkzdl
 6-13 f: mfswqfrqffrvfvf
@@ -998,3 +999,54 @@
 1-2 n: nntnnn
 4-12 l: lllllllllllnllll
 4-5 c: ccchc
+"""
+lines = lines.strip()
+lines = [line.strip() for line in lines.split("\n")]
+
+
+def timer(fn):
+    def function_wrapper(x):
+        import datetime
+
+        begin_time = datetime.datetime.now()
+        result = fn(x)
+        delta_time = datetime.datetime.now() - begin_time
+        print(delta_time)
+        return result
+
+    return function_wrapper
+
+
+@timer
+def part1(lines):
+    validPasswordCount = 0
+    for line in lines:
+        rule = line.split(": ")[0]
+        password = line.split(": ")[1]
+        countRange = rule.split(" ")[0]
+        charMin = int(countRange.split("-")[0])
+        charMax = int(countRange.split("-")[1])
+        char = rule.split(" ")[1]
+        charCount = password.count(char)
+        if charMin <= charCount <= charMax:
+            validPasswordCount += 1
+    return validPasswordCount
+
+
+@timer
+def part2(lines):
+    validPasswordCount = 0
+    for line in lines:
+        rule = line.split(": ")[0]
+        password = line.split(": ")[1]
+        countRange = rule.split(" ")[0]
+        charMin = int(countRange.split("-")[0])
+        charMax = int(countRange.split("-")[1])
+        char = rule.split(" ")[1]
+        if (password[charMin - 1] == char) ^ (password[charMax - 1] == char):
+            validPasswordCount += 1
+    return validPasswordCount
+
+
+print(f"Answer 1: {part1(lines)}")
+print(f"Answer 2: {part2(lines)}")
