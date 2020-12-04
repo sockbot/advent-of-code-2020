@@ -1137,19 +1137,18 @@ ecl:hzl eyr:2029
 iyr:2011 hcl:#866857 hgt:74in
 
 """
-# lines = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-# byr:1937 iyr:2017 cid:147 hgt:183cm
+# lines = """pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
+# hcl:#623a2f
 
-# iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
-# hcl:#cfa07d byr:1929
+# eyr:2029 ecl:blu cid:129 byr:1989
+# iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
 
-# hcl:#ae17e1 iyr:2013
-# eyr:2024
-# ecl:brn pid:760753108 byr:1931
-# hgt:179cm
+# hcl:#888785
+# hgt:164cm byr:2001 iyr:2015 cid:88
+# pid:545766238 ecl:hzl
+# eyr:2022
 
-# hcl:#cfa07d eyr:2025 pid:166559648
-# iyr:2011 ecl:brn hgt:59in"""
+# iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719"""
 
 lines = lines.strip()
 lines = [line for line in lines.split("\n\n")]
@@ -1192,9 +1191,64 @@ def part1():
     return validPassportCount
 
 
+def valueIsValid(key, value):
+    import re
+
+    if key == "byr":
+        return 1920 <= int(value) <= 2002
+    if key == "iyr":
+        return 2010 <= int(value) <= 2020
+    if key == "eyr":
+        return 2020 <= int(value) <= 2030
+    if key == "hgt":
+        if value[-2:] == "cm":
+            return 150 <= int(value[:-2]) <= 193
+        if value[-2:] == "in":
+            return 59 <= int(value[:-2]) <= 76
+        return False
+    if key == "hcl":
+        return re.match("#[0-9a-f]{6}", value)
+    if key == "ecl":
+        return value in ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
+    if key == "pid":
+        return len(value) == 9 and all([char.isnumeric() for char in value])
+    return False
+
+
 # @timer
 def part2():
-    return
+    validPassportCount = 0
+    for passport in lines:
+        fields = {
+            "byr": False,
+            "iyr": False,
+            "eyr": False,
+            "hgt": False,
+            "hcl": False,
+            "ecl": False,
+            "pid": False,
+            "cid": False,
+        }
+        passport = passport.replace("\n", " ")
+        data = passport.split(" ")
+        for keys in data:
+            keys = keys.split(":")
+            key = keys[0]
+            value = keys[1]
+            # print(key)
+            if valueIsValid(key, value):
+                fields[key] = True
+        if (
+            fields["byr"]
+            and fields["iyr"]
+            and fields["eyr"]
+            and fields["hgt"]
+            and fields["hcl"]
+            and fields["ecl"]
+            and fields["pid"]
+        ):
+            validPassportCount += 1
+    return validPassportCount
 
 
 print(f"Answer 1: {part1()}")
