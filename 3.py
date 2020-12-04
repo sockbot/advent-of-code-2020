@@ -367,13 +367,15 @@ def part1(slope):
     return treeCount
 
 
-import functools as functools
+import functools
+import itertools
 
 
 # @timer
 def part2():
     return functools.reduce(
-        lambda x, y: x * y, map(part1, [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)])
+        lambda x, y: x * y,
+        [part1(slope) for slope in [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]],
     )
 
 
