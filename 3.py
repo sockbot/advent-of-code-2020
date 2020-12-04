@@ -352,22 +352,8 @@ def timer(fn):
     return function_wrapper
 
 
-@timer
-def part1(lines):
-    treeCount = 0
-    width = len(lines[0])
-    x = 0
-    for line in lines:
-        x = x % width
-        if line[x] == "#":
-            treeCount += 1
-        x = x + 3
-
-    return treeCount
-
-
 # @timer
-def part2(lines, right, down):
+def part1(lines, right, down):
     treeCount = 0
     width = len(lines[0])
     x = 0
@@ -382,18 +368,20 @@ def part2(lines, right, down):
     return treeCount
 
 
-print(part1(lines))
-print()
-print(part2(lines, 1, 1))
-print(part2(lines, 3, 1))
-print(part2(lines, 5, 1))
-print(part2(lines, 7, 1))
-print(part2(lines, 1, 2))
-print()
-print(
-    part2(lines, 1, 1)
-    * part2(lines, 3, 1)
-    * part2(lines, 5, 1)
-    * part2(lines, 7, 1)
-    * part2(lines, 1, 2)
-)
+# @timer
+def part2(lines):
+    a = part1(lines, 1, 1)
+    b = part1(lines, 3, 1)
+    c = part1(lines, 5, 1)
+    d = part1(lines, 7, 1)
+    e = part1(lines, 1, 2)
+    print(a)
+    print(b)
+    print(c)
+    print(d)
+    print(e)
+    return a * b * c * d * e
+
+
+print(part1(lines, 3, 1))
+print(part2(lines))
