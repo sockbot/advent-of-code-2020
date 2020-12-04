@@ -352,7 +352,7 @@ def timer(fn):
     return function_wrapper
 
 
-@timer
+# @timer
 def part1(slope):
     right, down = slope
     treeCount = 0
@@ -370,7 +370,7 @@ def part1(slope):
 import functools as functools
 
 
-@timer
+# @timer
 def part2():
     return functools.reduce(
         lambda x, y: x * y, map(part1, [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)])
@@ -378,6 +378,7 @@ def part2():
 
 
 print(part1((3, 1)))
+print()
 print(part1((1, 1)))
 print(part1((3, 1)))
 print(part1((5, 1)))
