@@ -353,7 +353,7 @@ def timer(fn):
 
 
 # @timer
-def part1(lines, right, down):
+def part1(right, down):
     treeCount = 0
     width = len(lines[0])
     x, y = 0, 0
@@ -366,13 +366,15 @@ def part1(lines, right, down):
     return treeCount
 
 
+import functools as functools
+
 # @timer
-def part2(lines):
-    a = part1(lines, 1, 1)
-    b = part1(lines, 3, 1)
-    c = part1(lines, 5, 1)
-    d = part1(lines, 7, 1)
-    e = part1(lines, 1, 2)
+def part2():
+    a = part1(1, 1)
+    b = part1(3, 1)
+    c = part1(5, 1)
+    d = part1(7, 1)
+    e = part1(1, 2)
     print(a)
     print(b)
     print(c)
@@ -381,5 +383,5 @@ def part2(lines):
     return a * b * c * d * e
 
 
-print(part1(lines, 3, 1))
-print(part2(lines))
+print(part1(3, 1))
+print(part2())
