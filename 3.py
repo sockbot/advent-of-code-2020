@@ -356,15 +356,13 @@ def timer(fn):
 def part1(lines, right, down):
     treeCount = 0
     width = len(lines[0])
-    x = 0
-    for i in range(len(lines)):
-        line = lines[i]
-        if i % down == 1:
-            continue
-        x = x % width
-        if line[x] == "#":
+    x, y = 0, 0
+    while y < len(lines):
+        if lines[y][x] == "#":
             treeCount += 1
-        x = x + right
+        x += right
+        x = x % width
+        y += down
     return treeCount
 
 
