@@ -380,7 +380,7 @@ def part2():
     print(c)
     print(d)
     print(e)
-    return a * b * c * d * e
+    return functools.reduce(lambda x, y: x * y, [a, b, c, d, e])
 
 
 print(part1(3, 1))
