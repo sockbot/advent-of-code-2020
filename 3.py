@@ -372,20 +372,15 @@ import functools as functools
 
 @timer
 def part2():
-    a = part1((1, 1))
-    b = part1((3, 1))
-    c = part1((5, 1))
-    d = part1((7, 1))
-    e = part1((1, 2))
-    print(a)
-    print(b)
-    print(c)
-    print(d)
-    print(e)
     return functools.reduce(
         lambda x, y: x * y, map(part1, [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)])
     )
 
 
 print(part1((3, 1)))
+print(part1((1, 1)))
+print(part1((3, 1)))
+print(part1((5, 1)))
+print(part1((7, 1)))
+print(part1((1, 2)))
 print(part2())
