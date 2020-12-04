@@ -4,28 +4,18 @@ lines = lines.strip()
 lines = [line for line in lines.split("\n")]
 
 
-def timer(fn):
-    def function_wrapper(x):
-        import datetime
-
-        begin_time = datetime.datetime.now()
-        result = fn(x)
-        delta_time = datetime.datetime.now() - begin_time
-        print(delta_time)
-        return result
-
-    return function_wrapper
+from helpers import timer
 
 
-@timer
-def part1(lines):
+# @timer
+def part1():
     return
 
 
-@timer
-def part2(lines):
+# @timer
+def part2():
     return
 
 
-print(f"Answer 1: {part1(lines)}")
-print(f"Answer 2: {part2(lines)}")
+print(f"Answer 1: {part1()}")
+print(f"Answer 2: {part2()}")

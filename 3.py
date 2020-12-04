@@ -338,21 +338,12 @@ lines = """.#.......#...........#.........
 lines = lines.strip()
 lines = [line for line in lines.split("\n")]
 
-
-def timer(fn):
-    def function_wrapper(*args):
-        import datetime
-
-        begin_time = datetime.datetime.now()
-        result = fn(*args)
-        delta_time = datetime.datetime.now() - begin_time
-        print(delta_time)
-        return result
-
-    return function_wrapper
+from helpers import timer
+import functools
+import itertools
 
 
-# @timer
+@timer
 def part1(slope):
     right, down = slope
     treeCount = 0
@@ -367,11 +358,7 @@ def part1(slope):
     return treeCount
 
 
-import functools
-import itertools
-
-
-# @timer
+@timer
 def part2():
     return functools.reduce(
         lambda x, y: x * y,
