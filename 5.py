@@ -866,7 +866,7 @@ BFFFBBBRRR
 BFBBBBBRRL
 FBBBFFFLLR
 """
-lines = "FBFBBFFRLR"
+# lines = "BBFFBBFRLL"
 lines = lines.strip()
 lines = [line for line in lines.split("\n")]
 
@@ -890,22 +890,47 @@ def getRow(rowInfo):
 
 
 def getSeat(seatInfo):
-    return 10
+    lower = 0
+    upper = 8
+    for char in seatInfo:
+        if upper - 1 - lower == 1:
+            if char == "L":
+                return lower
+            return upper - 1
+        if char == "L":
+            upper = upper - (upper - lower) / 2
+        if char == "R":
+            lower = lower + (upper - lower) / 2
+    print("error")
+
+
+def getSeatId(line):
+    rowInfo = line[:7]
+    seatInfo = line[7:]
+    row = getRow(rowInfo)
+    seat = getSeat(seatInfo)
+    return int(row * 8 + seat)
 
 
 # @timer
 def part1():
+    highest = 0
     for line in lines:
-        rowInfo = line[:7]
-        seatInfo = line[7:]
-        row = getRow(rowInfo)
-        seat = getSeat(seatInfo)
-    return row * 8 + seat
+        seatId = getSeatId(line)
+        if seatId > highest:
+            highest = seatId
+    return highest
 
 
 # @timer
 def part2():
-    return
+    seatList = []
+    for line in lines:
+        seatList.append(getSeatId(line))
+    seatList.sort()
+    for i in range(len(seatList)):
+        if seatList[i] + 1 != seatList[i + 1]:
+            return seatList[i] + 1
 
 
 print(f"Answer 1: {part1()}")
