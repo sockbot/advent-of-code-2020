@@ -920,13 +920,11 @@ def part1():
 
 # @timer
 def part2():
-    seatList = []
-    for line in lines:
-        seatList.append(getSeatId(line))
-    seatList.sort()
-    for i in range(len(seatList)):
-        if seatList[i] + 1 != seatList[i + 1]:
-            return seatList[i] + 1
+    seatIds = list(map(getSeatId, lines))
+    seatIds.sort()
+    for i in range(len(seatIds)):
+        if seatIds[i] + 1 != seatIds[i + 1]:
+            return seatIds[i] + 1
 
 
 print(f"Answer 1: {part1()}")
