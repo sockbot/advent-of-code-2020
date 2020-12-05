@@ -914,12 +914,8 @@ def getSeatId(line):
 
 # @timer
 def part1():
-    highest = 0
-    for line in lines:
-        seatId = getSeatId(line)
-        if seatId > highest:
-            highest = seatId
-    return highest
+    seatIds = map(getSeatId, lines)
+    return max(seatIds)
 
 
 # @timer
