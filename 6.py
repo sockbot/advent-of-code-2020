@@ -2137,17 +2137,9 @@ from helpers import timer
 
 
 def getGroupAnswers2(line):
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    notAllAnswered = []
-    answers = []
-    for letter in alphabet:
-        for answer in line:
-            if letter not in answer:
-                notAllAnswered.append(letter)
-    for letter in alphabet:
-        if letter not in notAllAnswered:
-            answers.append(letter)
-    return answers
+    answers = [set(answer) for answer in line]
+    groupAnswers = set.intersection(*answers)
+    return groupAnswers
 
 
 # @timer
