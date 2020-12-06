@@ -914,13 +914,13 @@ def getSeatId(line):
 
 # @timer
 def part1():
-    seatIds = map(getSeatId, lines)
+    seatIds = [getSeatId(line) for line in lines]
     return max(seatIds)
 
 
 # @timer
 def part2():
-    seatIds = list(map(getSeatId, lines))
+    seatIds = [getSeatId(line) for line in lines]
     seatIds.sort()
     for i in range(len(seatIds)):
         if seatIds[i] + 1 != seatIds[i + 1]:
