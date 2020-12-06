@@ -920,8 +920,7 @@ def part1():
 
 # @timer
 def part2():
-    seatIds = [getSeatId(line) for line in lines]
-    seatIds.sort()
+    seatIds = sorted([getSeatId(line) for line in lines])
     for i in range(len(seatIds)):
         if seatIds[i] + 1 != seatIds[i + 1]:
             return seatIds[i] + 1
