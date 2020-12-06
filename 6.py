@@ -2152,10 +2152,7 @@ def getGroupAnswers2(line):
 
 # @timer
 def part1(lines):
-    answers = []
-    for line in lines:
-        groupAnswers = set(line)
-        answers.append(len(groupAnswers))
+    answers = [len(set(line)) for line in lines]
     return sum(answers)
 
 
