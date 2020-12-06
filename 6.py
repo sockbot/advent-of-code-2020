@@ -2136,7 +2136,7 @@ lines2 = [line.split("\n") for line in lines.split("\n\n")]
 from helpers import timer
 
 
-def getGroupAnswers2(line):
+def getGroupAnswers(line):
     answers = [set(answer) for answer in line]
     groupAnswers = set.intersection(*answers)
     return groupAnswers
@@ -2150,10 +2150,7 @@ def part1(lines):
 
 # @timer
 def part2(lines):
-    answers = []
-    for line in lines:
-        groupAnswers = getGroupAnswers2(line)
-        answers.append(len(groupAnswers))
+    answers = [len(getGroupAnswers(line)) for line in lines]
     return sum(answers)
 
 
