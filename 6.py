@@ -2136,14 +2136,6 @@ lines2 = [line.split("\n") for line in lines.split("\n\n")]
 from helpers import timer
 
 
-def getGroupAnswers(line):
-    groupAnswers = []
-    for char in line:
-        if char not in groupAnswers:
-            groupAnswers.append(char)
-    return groupAnswers
-
-
 def getGroupAnswers2(line):
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     notAllAnswered = []
@@ -2162,7 +2154,7 @@ def getGroupAnswers2(line):
 def part1(lines):
     answers = []
     for line in lines:
-        groupAnswers = getGroupAnswers(line)
+        groupAnswers = set(line)
         answers.append(len(groupAnswers))
     return sum(answers)
 
