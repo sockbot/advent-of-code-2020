@@ -602,6 +602,14 @@ vibrant magenta bags contain 2 dark lime bags.
 # vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 # faded blue bags contain no other bags.
 # dotted black bags contain no other bags."""
+# lines = """shiny gold bags contain 2 dark red bags.
+# dark red bags contain 2 dark orange bags.
+# dark orange bags contain 2 dark yellow bags.
+# dark yellow bags contain 2 dark green bags.
+# dark green bags contain 2 dark blue bags.
+# dark blue bags contain 2 dark violet bags.
+# dark violet bags contain no other bags.
+# """
 lines = lines.strip()
 
 
@@ -613,7 +621,7 @@ def getBagRules(line):
         if bagContent == "no other bags.":
             continue
         bagContent = bagContent.split(" ")
-        containsCount = bagContent[0]
+        containsCount = int(bagContent[0])
         containsName = bagContent[1] + " " + bagContent[2]
         containsBags.append({"name": containsName, "count": containsCount})
     return {"name": name, "containsBags": containsBags}
@@ -643,9 +651,28 @@ class Bag:
                 return True
         return False
 
+    def isShinyGold(self):
+        if self.name == "shiny gold":
+            return True
+
+    def getBag(self):
+        return self.allBags[self.name]
+
+    def bagsInThisBag(self):
+        count = 0
+        for insideBag in self.contains:
+            nextBag = self.allBags[insideBag["name"]]
+            if not nextBag.contains:
+                count += insideBag["count"]
+            else:
+                count += (
+                    insideBag["count"] + insideBag["count"] * nextBag.bagsInThisBag()
+                )
+        return count
+
 
 # @timer
-def part1(lines):
+def part1():
     bags = [Bag(bag["name"], *bag["containsBags"]) for bag in lines]
     bagColoursCount = 0
     for bag in bags:
@@ -656,8 +683,12 @@ def part1(lines):
 
 # @timer
 def part2():
-    return
+    bags = [Bag(bag["name"], *bag["containsBags"]) for bag in lines]
+    for bag in bags:
+        if bag.isShinyGold():
+            return bag.getBag().bagsInThisBag()
+    return "error"
 
 
-print(f"Answer 1: {part1(lines)}")
+print(f"Answer 1: {part1()}")
 print(f"Answer 2: {part2()}")
