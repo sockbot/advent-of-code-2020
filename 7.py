@@ -608,14 +608,14 @@ lines = lines.strip()
 def getBagRules(line):
     name = line.split(" bags contain ")[0]
     bagContents = line.split(" bags contain ")[1].split(", ")
-    containsBags = {}
+    containsBags = []
     for bagContent in bagContents:
         if bagContent == "no other bags.":
             continue
         bagContent = bagContent.split(" ")
         containsCount = bagContent[0]
         containsName = bagContent[1] + " " + bagContent[2]
-        containsBags[containsName] = {"count": containsCount}
+        containsBags.append({"name": containsName, "count": containsCount})
     return {"name": name, "containsBags": containsBags}
 
 
@@ -626,18 +626,32 @@ from helpers import timer
 
 
 class Bag:
-    name = ""
-    contains = {}
+
+    allBags = {}
 
     def __init__(self, name, *contains):
-        for bag in contains:
-            self.name = name
-            self.contains = {"name": bag.name, "count": bag.count}
+        self.name = name
+        self.contains = contains
+        self.allBags[name] = self
+
+    def hasShinyGold(self):
+        for bag in self.contains:
+            if bag["name"] == "shiny gold":
+                return True
+            nextBag = self.allBags[bag["name"]]
+            if nextBag.hasShinyGold():
+                return True
+        return False
 
 
 # @timer
-def part1():
-    return
+def part1(lines):
+    bags = [Bag(bag["name"], *bag["containsBags"]) for bag in lines]
+    bagColoursCount = 0
+    for bag in bags:
+        if bag.hasShinyGold():
+            bagColoursCount += 1
+    return bagColoursCount
 
 
 # @timer
@@ -645,5 +659,5 @@ def part2():
     return
 
 
-print(f"Answer 1: {part1()}")
+print(f"Answer 1: {part1(lines)}")
 print(f"Answer 2: {part2()}")
