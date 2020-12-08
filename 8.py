@@ -641,15 +641,15 @@ jmp +1
 # acc +1
 # jmp -4
 # acc +6"""
-lines = """nop +0
-acc +1
-jmp +4
-acc +3
-jmp -3
-acc -99
-acc +1
-jmp -4
-acc +6"""
+# lines = """nop +0
+# acc +1
+# jmp +4
+# acc +3
+# jmp -3
+# acc -99
+# acc +1
+# jmp -4
+# acc +6"""
 lines = lines.strip()
 
 
@@ -663,13 +663,13 @@ lines = [makeObject(line) for line in lines.split("\n")]
 
 
 from helpers import timer
+import random
+import copy
 
 
-# @timer
-def part1():
+def runProgram(instruct):
     acc = 0
     i = 0
-    instruct = lines
     while True:
         if instruct[i][2] > 0:
             break
@@ -686,13 +686,37 @@ def part1():
             instruct[i][2] += 1
             i += 1
         if i >= len(instruct):
-            break
-    return acc
+            return ["end", acc]
+    return ["loop", acc]
+
+
+# @timer
+def part1():
+    instruct = copy.deepcopy(lines)
+    return runProgram(instruct)
 
 
 # @timer
 def part2():
-    return
+    foundAnswer = ["", 0]
+    changed = False
+    while foundAnswer[0] != "end":
+        instruct = copy.deepcopy(lines)
+        while not changed:
+            if random.randint(0, 1) == 0:
+                source = "jmp"
+                target = "nop"
+            else:
+                source = "nop"
+                target = "jmp"
+            i = random.randint(0, len(instruct) - 1)
+            if instruct[i][0] == source:
+                instruct[i][0] = target
+                changed = True
+        foundAnswer = runProgram(instruct)
+        changed = False
+        print(f"Loop: {foundAnswer[1]}")
+    return foundAnswer[1]
 
 
 print(f"Answer 1: {part1()}")
