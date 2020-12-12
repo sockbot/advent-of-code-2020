@@ -780,10 +780,14 @@ F8
 # R90
 # F11"""
 lines = lines.strip()
-lines = [[line[0], int(line[1:])] for line in lines.split("\n")]
+import copy
 
+lines = [[line[0], int(line[1:])] for line in lines.split("\n")]
+lines1 = copy.deepcopy(lines)
+lines2 = copy.deepcopy(lines)
 
 from helpers import timer
+
 
 directions = {
     "N": [0, 1],
@@ -803,7 +807,7 @@ def getFacingDirection(facing, direction, degrees):
 
 
 def getDirection(facing):
-    print(facing)
+    # print(facing)
     if facing == 0:
         return "E"
     if facing == 90:
@@ -826,7 +830,7 @@ def move(current, direction, distance):
 def part1():
     current = [0, 0]  # x, y
     facing = 0  # East
-    for i in lines:
+    for i in lines1:
         if i[0] == "L" or i[0] == "R":
             facing = getFacingDirection(facing, i[0], i[1])
             continue
@@ -840,9 +844,58 @@ def part1():
     return sum([abs(dist) for dist in current])
 
 
+def getVector(waypoint, ship):
+    x = waypoint[0] - ship[0]
+    y = waypoint[1] - ship[1]
+    return [x, y]
+
+
+def moveShip(ship, vector, distance):
+    ship[0] += vector[0] * distance
+    ship[1] += vector[1] * distance
+    return ship
+
+
+def moveWaypoint(waypoint, direction, distance):
+    vector = directions[direction]
+    waypoint[0] += vector[0] * distance
+    waypoint[1] += vector[1] * distance
+    return waypoint
+
+
+def rotateWaypoint(waypoint, direction, degrees):
+    if direction == "L":
+        degrees *= -1
+    degrees %= 360
+    if degrees == 0:
+        return waypoint
+    if degrees == 90:
+        return [waypoint[1], waypoint[0] * -1]
+    if degrees == 180:
+        return [waypoint[0] * -1, waypoint[1] * -1]
+    if degrees == 270:
+        return [waypoint[1] * -1, waypoint[0]]
+    return "error"
+
+
 # @timer
 def part2():
-    return
+    ship = [0, 0]
+    waypoint = [10, 1]  # x, y
+    for i in lines2:
+        if i[0] == "L" or i[0] == "R":
+            waypoint = rotateWaypoint(waypoint, i[0], i[1])
+            continue
+        elif i[0] == "F":
+            distance = i[1]
+            ship = moveShip(ship, waypoint, distance)
+        else:
+            distance = i[1]
+            waypoint = moveWaypoint(waypoint, i[0], distance)
+
+        print(ship, waypoint)
+
+    return sum([abs(dist) for dist in ship])
 
 
 print(f"Answer 1: {part1()}")
