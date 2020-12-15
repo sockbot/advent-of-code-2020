@@ -50,8 +50,7 @@ def getDiff(index, answer):
         elif len(diffLog[diff]) == 1:
             diffLog[diff].append(index)
         else:
-            diffLog[diff][0] = diffLog[diff][1]
-            diffLog[diff][1] = index
+            diffLog[diff] = [diffLog[diff][1], index]
         return diff
     if len(diffLog[answer]) == 2:
         diff = diffLog[answer][1] - diffLog[answer][0]
@@ -60,8 +59,7 @@ def getDiff(index, answer):
         elif len(diffLog[diff]) == 1:
             diffLog[diff].append(index)
         else:
-            diffLog[diff][0] = diffLog[diff][1]
-            diffLog[diff][1] = index
+            diffLog[diff] = [diffLog[diff][1], index]
         return diff
 
     diff = diffLog[answer][1] - diffLog[answer][0]
@@ -70,8 +68,7 @@ def getDiff(index, answer):
     elif len(diffLog[diff]) <= 1:
         diffLog[diff].append(index)
     else:
-        diffLog[answer][0] = diffLog[answer][1]
-        diffLog[answer][1] = index
+        diffLog[diff] = [diffLog[diff][1], index]
     return diff
 
 
@@ -80,7 +77,7 @@ def part2(lines):
     log = copy.copy(lines)
     answer = log[-1]
     i = len(log)
-    while i < 30000000:
+    while i < 2020:
         answer = getDiff(i, answer)
         i += 1
         if i % 1000000 == 0:
