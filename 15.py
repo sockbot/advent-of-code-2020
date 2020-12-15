@@ -47,28 +47,22 @@ def getDiff(index, answer):
         diff = 0
         if diff not in diffLog:
             diffLog[diff] = [index]
-        elif len(diffLog[diff]) == 1:
-            diffLog[diff].append(index)
         else:
-            diffLog[diff] = [diffLog[diff][1], index]
+            diffLog[diff] = [diffLog[diff][-1], index]
         return diff
     if len(diffLog[answer]) == 2:
         diff = diffLog[answer][1] - diffLog[answer][0]
         if diff not in diffLog:
             diffLog[diff] = [index]
-        elif len(diffLog[diff]) == 1:
-            diffLog[diff].append(index)
         else:
-            diffLog[diff] = [diffLog[diff][1], index]
+            diffLog[diff] = [diffLog[diff][-1], index]
         return diff
 
     diff = diffLog[answer][1] - diffLog[answer][0]
     if diff not in diffLog:
         diffLog[diff] = [index]
-    elif len(diffLog[diff]) <= 1:
-        diffLog[diff].append(index)
     else:
-        diffLog[diff] = [diffLog[diff][1], index]
+        diffLog[diff] = [diffLog[diff][-1], index]
     return diff
 
 
