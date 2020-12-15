@@ -12,31 +12,13 @@ lines = [int(line) for line in lines.split(",")]
 from helpers import timer
 import copy
 
-# diffLog = {0: [0], 3: [1], 6: [2]}
-diffLog = {1: [0], 2: [1], 16: [2], 19: [3], 18: [4], 0: [5]}
-
 
 def diff(log, answer):
     lastTwo = [i for i, x in enumerate(log) if x == answer][-2:]
     return lastTwo[1] - lastTwo[0]
 
 
-# @timer
-def part1(lines):
-    log = copy.copy(lines)
-    answer = log[-1]
-    i = len(log)
-    while i < 2020:
-        if log.count(answer) <= 1:
-            answer = 0
-        else:
-            answer = diff(log, answer)
-        log.append(answer)
-        i += 1
-    return answer
-
-
-def getDiff(index, answer):
+def getDiff(index, answer, diffLog):
     if answer not in diffLog:
         diffLog[answer] = [index]
         return 0
@@ -54,17 +36,27 @@ def getDiff(index, answer):
     return diff
 
 
-# @timer
-def part2(lines):
+def helper(lines, target):
+    diffLog = {n: [i] for i, n in enumerate(lines)}
     log = copy.copy(lines)
     answer = log[-1]
     i = len(log)
-    while i < 2020:
-        answer = getDiff(i, answer)
+    while i < target:
+        answer = getDiff(i, answer, diffLog)
         i += 1
-        if i % 1000000 == 0:
+        if i % 1e6 == 0:
             print(i, answer)
     return answer
+
+
+# @timer
+def part1(lines):
+    return helper(lines, 2020)
+
+
+# @timer
+def part2(lines):
+    return helper(lines, 30e6)
 
 
 print(f"Answer 1: {part1(lines)}")
