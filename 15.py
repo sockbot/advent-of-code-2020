@@ -36,33 +36,21 @@ def part1(lines):
     return answer
 
 
-# def updateDiffLog(diff):
-
-
 def getDiff(index, answer):
     if answer not in diffLog:
         diffLog[answer] = [index]
         return 0
+
     if len(diffLog[answer]) == 1:
         diff = 0
-        if diff not in diffLog:
-            diffLog[diff] = [index]
-        else:
-            diffLog[diff] = [diffLog[diff][-1], index]
-        return diff
-    if len(diffLog[answer]) == 2:
+    else:
         diff = diffLog[answer][1] - diffLog[answer][0]
-        if diff not in diffLog:
-            diffLog[diff] = [index]
-        else:
-            diffLog[diff] = [diffLog[diff][-1], index]
-        return diff
 
-    diff = diffLog[answer][1] - diffLog[answer][0]
     if diff not in diffLog:
         diffLog[diff] = [index]
     else:
         diffLog[diff] = [diffLog[diff][-1], index]
+
     return diff
 
 
