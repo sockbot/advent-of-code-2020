@@ -276,14 +276,14 @@ tickets = """
 361,434,671,135,347,765,461,533,92,857,560,166,228,689,834,103,651,151,582,878"""
 
 rules = rules.strip().split("\n")
-rules = [rule.split(": ")[1].split(" or ") for rule in rules]
-rules = [rule for rule in rules]
+rules1 = [rule.split(": ")[1].split(" or ") for rule in rules]
+rules2 = {rule.split(": ")[0]: rule.split(": ")[1].split(" or ") for rule in rules}
 tickets = tickets.strip()
 tickets = [ticket.split(",") for ticket in tickets.split("\n")]
 
 
-def notValidForAny(rules, value):
-    for rule in rules:
+def notValidForAny(rules1, value):
+    for rule in rules1:
         for validRange in rule:
             a, b = validRange.split("-")
             if value in range(int(a), int(b) + 1):
@@ -292,11 +292,11 @@ def notValidForAny(rules, value):
 
 
 # @timer
-def part1(rules, tickets):
+def part1(rules1, tickets):
     invalidValues = []
     for ticket in tickets:
         for value in ticket:
-            if notValidForAny(rules, int(value)):
+            if notValidForAny(rules1, int(value)):
                 invalidValues.append(int(value))
     print(invalidValues)
     return sum(invalidValues)
@@ -307,5 +307,5 @@ def part2():
     return
 
 
-print(f"Answer 1: {part1(rules, tickets)}")
+print(f"Answer 1: {part1(rules1, tickets)}")
 print(f"Answer 2: {part2()}")
