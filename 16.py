@@ -27,9 +27,6 @@ wagon: 41-462 or 480-953
 zone: 35-411 or 427-960
 """
 
-# your ticket:
-# 7,1,14
-
 tickets = """
 7,3,47
 40,4,50
@@ -275,16 +272,47 @@ tickets = """
 332,758,595,369,745,743,385,437,640,684,97,936,536,725,322,734,313,287,401,138
 361,434,671,135,347,765,461,533,92,857,560,166,228,689,834,103,651,151,582,878"""
 
+# rules = """class: 0-1 or 4-19
+# row: 0-5 or 8-19
+# seat: 0-13 or 16-19"""
+# your ticket:
+myTicket = [11, 12, 13]
+myTicket = [
+    139,
+    109,
+    61,
+    149,
+    101,
+    89,
+    103,
+    53,
+    107,
+    59,
+    73,
+    151,
+    71,
+    67,
+    97,
+    113,
+    83,
+    163,
+    137,
+    167,
+]
+# tickets = """3,9,18
+# 15,1,5
+# 5,14,9"""
+
 rules = rules.strip().split("\n")
-rules1 = [rule.split(": ")[1].split(" or ") for rule in rules]
-rules2 = {rule.split(": ")[0]: rule.split(": ")[1].split(" or ") for rule in rules}
+# rules = [rule.split(": ")[1].split(" or ") for rule in rules]
+rules = {rule.split(": ")[0]: rule.split(": ")[1].split(" or ") for rule in rules}
 tickets = tickets.strip()
 tickets = [ticket.split(",") for ticket in tickets.split("\n")]
 
 
-def notValidForAny(rules1, value):
-    for rule in rules1:
-        for validRange in rule:
+def notValidForAny(rules2, value):
+    for k, rule in enumerate(rules2):
+        for validRange in rules2[rule]:
             a, b = validRange.split("-")
             if value in range(int(a), int(b) + 1):
                 return False
@@ -292,20 +320,43 @@ def notValidForAny(rules1, value):
 
 
 # @timer
-def part1(rules1, tickets):
+def part1(rules, tickets):
     invalidValues = []
     for ticket in tickets:
         for value in ticket:
-            if notValidForAny(rules1, int(value)):
+            if notValidForAny(rules, int(value)):
                 invalidValues.append(int(value))
     print(invalidValues)
     return sum(invalidValues)
 
 
+def validDeparture(rules2, ticketVal):
+    for k, rule in enumerate(rules2):
+        if "departure" in rule:
+            for validRange in rules2[rule]:
+                a, b = validRange.split("-")
+                if ticketVal in range(int(a), int(b) + 1):
+                    return True
+    return False
+
+
 # @timer
-def part2():
-    return
+def part2(rules2, tickets, myTicket):
+    validTickets = []
+    for ticket in tickets:
+        for value in ticket:
+            if notValidForAny(rules2, int(value)):
+                continue
+            else:
+                validTickets.append(ticket)
+                break
+    departureValues = []
+    for i in range(len(myTicket)):
+        if not validDeparture(rules2, myTicket[i]):
+            continue
+        departureValues.append(myTicket[i])
+    return departureValues
 
 
-print(f"Answer 1: {part1(rules1, tickets)}")
-print(f"Answer 2: {part2()}")
+print(f"Answer 1: {part1(rules, tickets)}")
+print(f"Answer 2: {part2(rules, tickets, myTicket)}")
