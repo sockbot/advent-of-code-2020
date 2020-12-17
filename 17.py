@@ -5,15 +5,15 @@ lines = """
 .#.
 ..#
 ###"""
-# lines = """
-# ...#.#.#
-# ..#..#..
-# #.#.##.#
-# ###.##..
-# #####.##
-# #.......
-# #..#..##
-# ...##.##"""
+lines = """
+...#.#.#
+..#..#..
+#.#.##.#
+###.##..
+#####.##
+#.......
+#..#..##
+...##.##"""
 
 lines = lines.strip()
 lines = [list(line) for line in lines.split("\n")]
@@ -23,7 +23,29 @@ world = [
     [[".", ".", "."], [".", ".", "."], [".", ".", "."]],
 ]
 
-# world = lines
+world = [
+    [
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+    ],
+    lines,
+    [
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+    ],
+]
 
 
 def getActiveNeighbourCount(world, cubeCoord):
@@ -33,15 +55,17 @@ def getActiveNeighbourCount(world, cubeCoord):
             for x in (-1, 0, 1):
                 if x == 0 and y == 0 and z == 0:
                     continue
-                a, b, c = cubeCoord
-                if len(world) <= a + x or a + x < 0:
+                k, j, i = cubeCoord
+                if len(world) <= k + x or k + x < 0:
                     continue
-                if len(world) <= b + y or b + y < 0:
+                if len(world[0]) <= j + y or j + y < 0:
                     continue
-                if len(world) <= c + z or c + z < 0:
+                if len(world[0][0]) <= i + z or i + z < 0:
                     continue
-                print([a + x, b + y, c + z])
-                if world[a + x][b + y][c + z] == "#":
+                # print([k + x, j + y, i + z])
+                # if k + x == 13 and j + y == 19 and i + z == 19:
+                #     print(world)
+                if world[k + x][j + y][i + z] == "#":
                     count += 1
     return count
 
@@ -75,9 +99,9 @@ def getNewWorld(oldWorld):
 
     oldWorld = copy.deepcopy(newWorld)
     # activate/deactivate the cubes
-    for i in range(len(oldWorld)):
+    for i in range(len(oldWorld[0][0])):
         for j in range(len(oldWorld[0])):
-            for k in range(len(oldWorld[0][0])):
+            for k in range(len(oldWorld)):
                 anc = getActiveNeighbourCount(oldWorld, [k, j, i])
                 if oldWorld[k][j][i] == "#":
                     if anc == 2 or anc == 3:
@@ -98,9 +122,9 @@ def part1(world):
         world = getNewWorld(world)
 
     count = 0
-    for i in range(len(world)):
+    for i in range(len(world[0][0])):
         for j in range(len(world[0])):
-            for k in range(len(world[0][0])):
+            for k in range(len(world)):
                 if world[k][j][i] == "#":
                     count += 1
     return count
