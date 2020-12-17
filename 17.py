@@ -5,6 +5,16 @@ lines = """
 .#.
 ..#
 ###"""
+# lines = """
+# ...#.#.#
+# ..#..#..
+# #.#.##.#
+# ###.##..
+# #####.##
+# #.......
+# #..#..##
+# ...##.##"""
+
 lines = lines.strip()
 lines = [list(line) for line in lines.split("\n")]
 world = [
@@ -12,6 +22,8 @@ world = [
     lines,
     [[".", ".", "."], [".", ".", "."], [".", ".", "."]],
 ]
+
+# world = lines
 
 
 def getActiveNeighbourCount(world, cubeCoord):
@@ -61,21 +73,22 @@ def getNewWorld(oldWorld):
         line.insert(0, ["." for coord in range(len(line[0]))])
         line.append(["." for coord in range(len(line[0]))])
 
+    oldWorld = copy.deepcopy(newWorld)
     # activate/deactivate the cubes
     for i in range(len(oldWorld)):
         for j in range(len(oldWorld[0])):
             for k in range(len(oldWorld[0][0])):
                 anc = getActiveNeighbourCount(oldWorld, [k, j, i])
-                if oldWorld[i][j][k] == "#":
+                if oldWorld[k][j][i] == "#":
                     if anc == 2 or anc == 3:
-                        newWorld[i][j][k] = "#"
+                        newWorld[k][j][i] = "#"
                     else:
-                        newWorld[i][j][k] = "."
+                        newWorld[k][j][i] = "."
                 else:  # if inactive
                     if anc == 3:
-                        newWorld[i][j][k] = "#"
+                        newWorld[k][j][i] = "#"
                     else:
-                        newWorld[i][j][k] = "."
+                        newWorld[k][j][i] = "."
     return newWorld
 
 
