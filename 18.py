@@ -376,28 +376,47 @@ lines = """7 * (7 + (4 + 5) + 4)
 7 + 8 + ((5 * 6 * 2) * (4 * 5 * 7 + 8 * 8)) * (9 * 5 + 8 * (5 * 3 * 3 * 5 + 3 * 3) * 9 * 9) * 9 * 6
 ((8 * 5 + 6 * 6) + 2 + (4 + 2 * 2 * 9 * 7 * 7)) * (7 + 9) + (9 + 3 + 7 * 8 + 4) * 5
 """
-lines = """1 + 2 * 3 + 4 * 5 + 6"""
+# lines = """1 + 2 * 3 + 4 * 5 + 6"""
+# lines = """1 + (2 * 3) + (4 * (5 + 6))
+# 2 * 3 + (4 * 5)
+# 5 + (8 * 3 + 9 + 3 * 4 * 3)
+# 5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))
+# ((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"""
 lines = lines.strip()
-lines = [line.split(" ") for line in lines.split("\n")]
+# lines = lines.replace(" ", "")
+lines = [line for line in lines.split("\n")]
+
+import re
+import pprint as pp
 
 
-def eval(exp):
-    if len(exp) == 3:
-        if exp[1] == "*":
-            return int(exp[0]) * int(exp[2])
-        if exp[1] == "+":
-            return int(exp[0]) + int(exp[2])
-    total = eval(exp[0:3])
-    exp = exp[3 : len(exp)]
-    exp.insert(0, total)
-    return eval(exp)
+def calc(expr):
+    if len(expr) == 3:
+        if expr[1] == "*":
+            return int(expr[0]) * int(expr[2])
+        if expr[1] == "+":
+            return int(expr[0]) + int(expr[2])
+    total = calc(expr[0:3])
+    expr = expr[3 : len(expr)]
+    expr.insert(0, total)
+    return calc(expr)
 
 
 # @timer
 def part1(lines):
     total = []
-    for exp in lines:
-        total.append(eval(exp))
+    for line in lines:
+        while True:
+            m = re.search("(\(([^()]*)\))", line)
+            if not m:
+                break
+            expr = m.groups()[1].split(" ")
+            subAns = str(calc(expr))
+            line = line.replace(m.groups()[0], subAns)
+            pp.pprint(line)
+        line = line.split(" ")
+        total.append(calc(line))
+    pp.pprint(total)
     return sum(total)
 
 
