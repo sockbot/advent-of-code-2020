@@ -391,6 +391,8 @@ import pprint as pp
 
 
 def calc(expr):
+    if len(expr) < 3:
+        return int(expr[0])
     if len(expr) == 3:
         if expr[1] == "*":
             return int(expr[0]) * int(expr[2])
@@ -413,16 +415,43 @@ def part1(lines):
             expr = m.groups()[1].split(" ")
             subAns = str(calc(expr))
             line = line.replace(m.groups()[0], subAns)
-            pp.pprint(line)
+            # pp.pprint(line)
         line = line.split(" ")
         total.append(calc(line))
-    pp.pprint(total)
+    # pp.pprint(total)
     return sum(total)
 
 
 # @timer
 def part2(lines):
-    return
+    total = []
+    for line in lines:
+        while True:
+            m = re.search("(\(([^()]*)\))", line)
+            if not m:
+                break
+            expr = m.groups()[1].split(" ")
+            while True:
+                n = re.search("(\d+) \+ (\d+)", "".join(expr))
+                if not n:
+                    break
+                a, b = n.groups(1, 2)
+                line = line.replace(n.groups()[0], str(int(a) + int(b)))
+            subAns = str(calc(expr))
+            line = line.replace(m.groups()[0], subAns)
+        while True:
+            pp.pprint(line)
+            n = re.search("((\d+) \+ (\d+))", line)
+            if not n:
+                break
+            _, a, b = n.groups()
+            # pp.pprint(a, b)
+            line = line.replace(n.groups()[0], str(int(a) + int(b)))
+        line = line.split(" ")
+        pp.pprint(line)
+        total.append(calc(line))
+    # pp.pprint(total)
+    return sum(total)
 
 
 print(f"Answer 1: {part1(lines)}")
