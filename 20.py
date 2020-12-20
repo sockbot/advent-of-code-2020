@@ -1,5 +1,6 @@
 from helpers import timer
 import copy
+import functools as ft
 
 lines = """Tile 2311:
 ..##.#..#.
@@ -110,7 +111,25 @@ Tile 3079:
 ..#.###..."""
 lines = lines.strip()
 tiles = [line.split("\n") for line in lines.split("\n\n")]
-# tiles = [[edges for edges in tile] for tile in tiles]
+
+
+def isCornerTile(tile, tiles):
+    matchCount = 0
+    for edge in tile["edges"]:
+        for targetTile in tiles:
+            for targetEdge in targetTile["edges"]:
+                if edge == targetEdge or edge == targetEdge[::-1]:
+                    matchCount += 1
+    return matchCount <= 3
+
+
+def getCornerIds(tiles):
+    cornerIds = []
+    for tile in tiles:
+        if isCornerTile(tile, tiles):
+            cornerIds.append(int(tile["tileId"]))
+    return cornerIds
+
 
 # @timer
 def part1(tiles):
@@ -123,7 +142,8 @@ def part1(tiles):
         top = tile[1]
         data.append({"tileId": tileId, "edges": [top, bottom, left, right]})
 
-    return data
+    cornerIds = getCornerIds(data)
+    return ft.reduce(lambda x, y: x * y, cornerIds, 0)
 
 
 # @timer
