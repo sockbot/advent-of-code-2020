@@ -115,12 +115,15 @@ tiles = [line.split("\n") for line in lines.split("\n\n")]
 
 def isCornerTile(tile, tiles):
     matchCount = 0
-    for edge in tile["edges"]:
-        for targetTile in tiles:
+    for targetTile in tiles:
+        if tile == targetTile:
+            continue
+        for edge in tile["edges"]:
             for targetEdge in targetTile["edges"]:
                 if edge == targetEdge or edge == targetEdge[::-1]:
                     matchCount += 1
-    return matchCount <= 3
+    print(tile["tileId"], matchCount)
+    return matchCount < 3
 
 
 def getCornerIds(tiles):
@@ -143,7 +146,7 @@ def part1(tiles):
         data.append({"tileId": tileId, "edges": [top, bottom, left, right]})
 
     cornerIds = getCornerIds(data)
-    return ft.reduce(lambda x, y: x * y, cornerIds, 0)
+    return ft.reduce(lambda x, y: x * y, cornerIds)
 
 
 # @timer
